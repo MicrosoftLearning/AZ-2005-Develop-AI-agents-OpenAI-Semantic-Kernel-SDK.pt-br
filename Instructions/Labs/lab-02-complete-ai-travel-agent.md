@@ -92,7 +92,7 @@ Para este exercício, você cria um ponto de extremidade para o serviço de mode
     ```csharp
     string yourDeploymentName = "";
     string yourEndpoint = "";
-    string yourKey = "";
+    string yourApiKey = "";
     ```
 
     > [!NOTE]
