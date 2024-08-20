@@ -145,7 +145,7 @@ Nesta tarefa, você criará um plug-in que permite adicionar músicas à lista d
 
 1. Crie uma pasta no diretório "Lab01-Project" e nomeie-a "Plug-ins."
 
-1. Na pasta "Plugins", crie um novo arquivo "MusicLibrary.cs"
+1. Na pasta "Plugins", crie um novo arquivo "MusicLibraryPlugin.cs"
 
     Primeiro, crie algumas funções rápidas para obter e adicionar músicas à lista "Tocadas Recentemente" do usuário.
 
@@ -232,6 +232,9 @@ Nesta tarefa, você criará um plug-in que permite adicionar músicas à lista d
     ```
 
     Se você abrir o arquivo "Files/RecentlyPlayed.txt", verá a nova música adicionada à lista.
+
+> [!NOTE]
+> Se o terminal exibir avisos para valores nulos, você poderá ignorá-los, pois eles não afetarão o resultado.
 
 ### Tarefa 2: Fornecer recomendações personalizadas de músicas
 
