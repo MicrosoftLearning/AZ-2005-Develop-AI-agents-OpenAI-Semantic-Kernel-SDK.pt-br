@@ -186,6 +186,8 @@ Nesta tarefa, você criará uma função nativa que pode converter um valor de u
 
     Nesse código, use o método **ImportPluginFromType** para importar seu plug-in. Em seguida, use o método **InvokeAsync** para invocar sua função de plug-in. O método **InvokeAsync** recebe o nome do plug-in, o nome da função e um dicionário de parâmetros. Por fim, imprima o resultado no console. Em seguida, execute o código para ter certeza de que está funcionando.
 
+1. Abra o terminal clicando em Terminal > Novo Terminal.
+
 1. Insira `dotnet run` no terminal. A seguinte saída deve ser exibida:
 
     ```output
