@@ -4,14 +4,14 @@ lab:
   module: 'Module 01: Build your kernel'
 ---
 
-# Laboratório: Criar um agente de recomendação de música com IA
+# Laboratório: Criar um assistente de recomendação de música com IA
 # Manual de laboratório do aluno
 
-Neste laboratório, você criará o código de um agente de IA que pode gerenciar a biblioteca de músicas do usuário e oferecer recomendações personalizadas de músicas e shows. Você usará o SDK do Semantic Kernel para criar o agente de IA e conectá-lo ao serviço de modelo de linguagem grande (LLM). O SDK do Semantic Kernel permite que você crie um aplicativo inteligente que possa interagir com o serviço LLM e fornecer recomendações personalizadas ao usuário.
+Neste laboratório, você criará o código de um assistente de IA que pode gerenciar a biblioteca de músicas do usuário e oferecer recomendações personalizadas de músicas e shows. Você usará o SDK do Semantic Kernel para criar o assistente de IA e conectá-lo ao serviço de LLM (grande modelo de linguagem). O SDK do Semantic Kernel permite que você crie um aplicativo inteligente que possa interagir com o serviço LLM e fornecer recomendações personalizadas ao usuário.
 
 ## Cenário do laboratório
 
-Você é desenvolvedor de um serviço internacional de streaming de áudio. Recebeu a tarefa de integrar o serviço à IA para oferecer aos usuários uma experiência mais personalizada. A IA deve ser capaz de recomendar músicas e as próximas turnês de artistas com base no histórico de audição e nas preferências do usuário. Você decide usar o SDK do Semantic Kernel para criar um agente de IA que possa interagir com o serviço de modelo de linguagem grande (LLM).
+Você é desenvolvedor de um serviço internacional de streaming de áudio. Recebeu a tarefa de integrar o serviço à IA para oferecer aos usuários uma experiência mais personalizada. A IA deve ser capaz de recomendar músicas e as próximas turnês de artistas com base no histórico de audição e nas preferências do usuário. Você decide usar o SDK do Semantic Kernel para criar um assistente de IA que possa interagir com o serviço de LLM(grande modelo de linguagem).
 
 ## Objetivos
 
@@ -121,20 +121,25 @@ Neste exercício, você aprenderá a criar seu primeiro projeto SDK do Kernel Se
     using Microsoft.SemanticKernel.Connectors.OpenAI;
     ```
 
-1. Para criar o kernel, adicione o seguinte código ao seu arquivo **Program.cs**:
-    
+1. Adicione o seguinte código no comentário **Create a kernel builder with Azure OpenAI chat completion**:
+
     ```c#
     // Create a kernel builder with Azure OpenAI chat completion
     var builder = Kernel.CreateBuilder();
     builder.AddAzureOpenAIChatCompletion(modelId, endpoint, apiKey);
+    ```
 
+1. Construa o kernel adicionando este código no comentário **Build the kernel**:
+
+    ```c#
     // Build the kernel
     var kernel = builder.Build();
     ```
 
-1. Para verificar se o kernel e o ponto de extremidade estão funcionando, insira o seguinte código:
+1. Adicione o seguinte código no comentário **Verify the endpoint and run a prompt**:
 
     ```c#
+    // Verify the endpoint and run a prompt
     var result = await kernel.InvokePromptAsync("Who are the top 5 most famous musicians in the world?");
     Console.WriteLine(result);
     ```
@@ -147,6 +152,8 @@ Neste exercício, você aprenderá a criar seu primeiro projeto SDK do Kernel Se
 
     A resposta vem do modelo de IA aberta do Azure que você passou para o kernel. O SDK do Kernel Semântico consegue se conectar ao LLM (modelo de linguagem grande) e executar a solicitação. Observe a rapidez com que você foi capaz de receber respostas do LLM. O SDK do Kernel Semântico torna a criação de aplicativos inteligentes fácil e eficiente.
 
+Você pode remover o código de verificação depois de confirmar sua resposta.
+
 ## Exercício 2: Criar plug-ins personalizados para biblioteca de música
 
 Neste exercício, você criará plug-ins personalizados para sua biblioteca de música. Você cria funções que podem adicionar músicas à lista de músicas reproduzidas recentemente pelo usuário, obter a lista de músicas reproduzidas recentemente e fornecer recomendações personalizadas de músicas. Você também criará uma função que sugere um show com base na localização do usuário e nas músicas que ele ouviu recentemente.
@@ -157,149 +164,101 @@ Neste exercício, você criará plug-ins personalizados para sua biblioteca de m
 
 Nesta tarefa, você criará um plug-in que permite adicionar músicas à lista de músicas tocadas recentemente pelo usuário e obter a lista das músicas tocadas recentemente. Para simplificar, as músicas reproduzidas recentemente serão armazenadas em um arquivo de texto.
 
-1. Na pasta **Plugins**, crie um novo arquivo **MusicLibraryPlugin.cs**
+1. Na pasta **Plugins**, abra o arquivo **MusicLibraryPlugin.cs**
 
-    Primeiro, crie algumas funções rápidas para obter e adicionar músicas à lista "Tocadas Recentemente" do usuário.
+1. No comentário **Create a kernel function to get recently played songs**, adicione o decorador de função de kernel:
 
-1. Insira o seguinte código:
 
     ```c#
-    using System.Text.Json;
-    using System.Text.Json.Nodes;
-    using Microsoft.SemanticKernel;
-
-    public class MusicLibraryPlugin
-    {
-        [KernelFunction("GetRecentPlays")]
-        public static string GetRecentPlays()
-        {
-            string content = File.ReadAllText($"Files/RecentlyPlayed.txt");
-            return content;
-        }
-    }
+    // Create a kernel function to get recently played songs
+    [KernelFunction("GetRecentPlays")]
+    public static string GetRecentPlays()
     ```
 
-    Nesse código, você vai usar o decorador `KernelFunction` para declarar sua função nativa. Você usará um nome descritivo para a função para que a IA possa chamá-la corretamente. A lista de músicas reproduzidas recentemente pelo usuário será armazenada em um arquivo de texto chamado "RecentlyPlayed.txt". Em seguida, você pode adicionar código para adicionar uma música à lista.
+    O decorador `KernelFunction` declara a sua função nativa. Você usará um nome descritivo para a função para que a IA possa chamá-la corretamente. A lista de músicas reproduzidas recentemente pelo usuário será armazenada em um arquivo de texto chamado "RecentlyPlayed.txt".
 
-1. Adicione o seguinte código à classe `MusicLibraryPlugin`:
+1. No comentário **Create a kernel function to add a song to the recently played list**, adicione o decorador de função de kernel:
 
     ```c#
+    // Create a kernel function to add a song to the recently played list
     [KernelFunction("AddToRecentPlays")]
     public static string AddToRecentlyPlayed(string artist,  string song, string genre)
-    {
-        // Read the existing content from the file
-        string filePath = "Files/RecentlyPlayed.txt";
-        string jsonContent = File.ReadAllText(filePath);
-        var recentlyPlayed = (JsonArray) JsonNode.Parse(jsonContent)!;
-
-        var newSong = new JsonObject
-        {
-            ["title"] = song,
-            ["artist"] = artist,
-            ["genre"] = genre
-        };
-
-        // Insert the new song
-        recentlyPlayed.Insert(0, newSong);
-        File.WriteAllText(filePath, JsonSerializer.Serialize(recentlyPlayed,
-            new JsonSerializerOptions { WriteIndented = true }));
-
-        return $"Added '{song}' to recently played";
-    }
     ```
 
-    Nesse código, você vai criar uma função que aceita o artista, a música e o gênero como cadeias de caracteres. O arquivo "RecentlyPlayed.txt" contém uma lista formatada em json das músicas que o usuário tocou recentemente. Esse código lê o conteúdo existente no arquivo, o analisa e adiciona a nova música à lista. Depois disso, a lista atualizada é gravada novamente no arquivo.
+    Quando essa classe de plug-in for adicionada ao kernel, ela será capaz de identificar e invocar as funções.
 
-1. Atualize seu arquivo **Program.cs** com o seguinte código:
+1. Navegue até o arquivo **Program.cs**.
+
+1. Adicione o seguinte código em **Importar plug-ins para o kernel**:
 
     ```c#
-    var kernel = builder.Build();
+    // Import plugins to the kernel
     kernel.ImportPluginFromType<MusicLibraryPlugin>();
+    ```
 
+1. No comentário **Create prompt execution settings**, adicione o seguinte código para invocar automaticamente a função:
+
+    ```c#
+    // Create prompt execution settings
+    OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new() 
+    {
+        FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
+    };
+    ```
+
+    Usar essa configuração permitirá que o kernel invoque funções automaticamente sem a necessidade de especificá-las no prompt.
+
+1. Adicione o seguinte código no comentário **Get chat completion service**:
+
+    ```c#
     // Get chat completion service.
     var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
-
-    // Create a chat history object
     ChatHistory chatHistory = [];
     ```
 
-    Neste código, você importará o plug-in para o kernel e adicionará a configuração para a conclusão do chat.
-
-1. Adicione os seguintes prompts para invocar o plug-in:
+1. Adicione o seguinte código no comentário **Create a helper function to await and output the reply from the chat completion service**:
 
     ```c#
+    // Create a helper function to await and output the reply from the chat completion service
+    async Task GetAssistantReply() {
+        ChatMessageContent reply = await chatCompletionService.GetChatMessageContentAsync(
+            chatHistory,
+            kernel: kernel,
+            executionSettings: openAIPromptExecutionSettings
+        );
+        chatHistory.AddAssistantMessage(reply.ToString());
+        Console.WriteLine(reply.ToString());
+    }
+    ```
+
+
+1. Adicione o seguinte código no comentário **Add system messages to the chat**:
+
+    ```c#
+    // Add system messages to the chat
     chatHistory.AddSystemMessage("When a user has played a song, add it to their list of recent plays.");
     chatHistory.AddSystemMessage("The listener has just played the song Danse by Tiara. It falls under these genres: French pop, electropop, pop.");
-
-    ChatMessageContent reply = await chatCompletionService.GetChatMessageContentAsync(
-        chatHistory,
-        kernel: kernel
-    );
-    Console.WriteLine(reply.ToString());
-    chatHistory.AddAssistantMessage(reply.ToString());
+    await GetAssistantReply();
     ```
 
 1. Execute o código inserindo `dotnet run` no terminal.
 
-    A seguinte saída deve ser exibida:
+    Os prompts de mensagem do sistema que você adicionou devem invocar as funções do plug-in e devem ver a seguinte saída:
 
     ```output
     Added 'Danse' to recently played
     ```
 
-    Se você abrir o arquivo "Files/RecentlyPlayed.txt", verá a nova música adicionada à lista.
+    Se você abrir o arquivo **Files/RecentlyPlayed.txt**, verá a nova música adicionada à lista.
 
 ### Tarefa 2: Fornecer recomendações personalizadas de músicas
 
 Nesta tarefa, você criará um prompt que fornece recomendações de músicas personalizadas para o usuário com base nas músicas reproduzidas recentemente. O prompt combina funções nativas para gerar uma recomendação de música. Você também criará uma função a partir do prompt para torná-lo reutilizável.
 
-1. No arquivo **MusicLibraryPlugin.cs**, adicione a seguinte função:
+1. No arquivo **Program.cs**, adicione o seguinte código no comentário **Create a song suggester function using a prompt**:
 
     ```c#
-    [KernelFunction("GetMusicLibrary")]
-    public static string GetMusicLibrary()
-    {
-        string dir = Directory.GetCurrentDirectory();
-        string content = File.ReadAllText($"Files/MusicLibrary.txt");
-        return content;
-    }
-    ```
-
-    Essa função fará a leitura da lista de músicas disponíveis em um arquivo chamado "MusicLibrary.txt". O arquivo contém uma lista formatada em json das músicas disponíveis para o usuário.
-
-1. Atualize seu arquivo **Program.cs** com o seguinte código:
-
-    ```c#
-    chatHistory.AddSystemMessage("When a user has played a song, add it to their list of recent plays.");
-    
-    string prompt = @"This is a list of music available to the user:
-        {{MusicLibraryPlugin.GetMusicLibrary}} 
-
-        This is a list of music the user has recently played:
-        {{MusicLibraryPlugin.GetRecentPlays}}
-
-        Based on their recently played music, suggest a song from
-        the list to play next";
-
-    var result = await kernel.InvokePromptAsync(prompt);
-    Console.WriteLine(result);
-    ```
-
-    Primeiro, você pode remover o código que anexa uma música à lista. Depois, você vai combinar suas funções de plug-in nativas com um prompt semântico. As funções nativas são capazes de recuperar dados do usuário que o modelo de linguagem grande (LLM) não conseguiu acessar por conta própria, e o LLM é capaz de gerar uma recomendação de música com base na entrada de texto.
-
-1. Para testar seu código, insira `dotnet run` no terminal.
-
-    Você deverá ver uma resposta semelhante ao seguinte resultado:
-
-    ```output 
-    Based on the user's recently played music, a suggested song to play next could be "Sabry Aalil" by Yasemin since the user seems to enjoy pop and Egyptian pop music.
-    ```
-
-    >[!NOTE] A música recomendada pode ser diferente da que mostramos aqui.
-
-1. Modifique o código para criar uma função a partir do prompt:
-
-    ```c#
+    // Create a song suggester function using a prompt
     var songSuggesterFunction = kernel.CreateFunctionFromPrompt(
         promptTemplate: @"This is a list of music available to the user:
         {{MusicLibraryPlugin.GetMusicLibrary}} 
@@ -318,42 +277,32 @@ Nesta tarefa, você criará um prompt que fornece recomendações de músicas pe
 
     Neste código, você criará uma função a partir do prompt e a adicionará aos plug-ins do kernel.
 
-1. Adicione o seguinte código para invocar automaticamente a função:
+1. No comentário **Invoke the song suggester function with a prompt from the user***, adicione o seguinte código:
 
     ```c#
-    OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new() 
-    {
-        FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
-    };
-
+    // Invoke the song suggester function with a prompt from the user
     chatHistory.AddUserMessage("What song should I play next?");
-
-    reply = await chatCompletionService.GetChatMessageContentAsync(
-        chatHistory,
-        kernel: kernel,
-        executionSettings: openAIPromptExecutionSettings
-    );
-    Console.WriteLine(reply.ToString());
-    chatHistory.AddAssistantMessage(reply.ToString());
+    await GetAssistantReply();
     ```
 
-    Neste código, você criará a configuração para habilitar a chamada automática de função. Em seguida, você adicionará um prompt que invocará a função e recuperará a resposta.
+    Agora seu aplicativo pode invocar automaticamente suas funções de plug-in de acordo com a solicitação do usuário. Vamos estender esse código para fornecer recomendações de shows também com base nas informações do usuário.
 
 ### Tarefa 3: Fornecer recomendações personalizadas de shows
 
 Nesta tarefa, você criará um plug-in que solicita ao LLM que sugira um show com base nas músicas que o usuário ouviu recentemente e na localização.
 
-1. No arquivo **Program.cs**, adicione o plug-in de shows de música ao kernel:
+1. No arquivo **Program.cs**, importe o plug-in shows no comentário **Import plugins to the kernel**:
 
     ```c#
-    var kernel = builder.Build();    
+    // Import plugins to the kernel 
     kernel.ImportPluginFromType<MusicLibraryPlugin>();
     kernel.ImportPluginFromType<MusicConcertsPlugin>();
     ```
 
-1. Adicione o código para criar uma função a partir do prompt:
+1. Adicione o seguinte código no comentário **Create a concert suggester function using a prompt**:
 
     ```c#
+    // Create a concert suggester function using a prompt
     var concertSuggesterFunction = kernel.CreateFunctionFromPrompt(
         promptTemplate: @"This is a list of the user's recently played songs:
         {{MusicLibraryPlugin.GetRecentPlays}}
@@ -376,15 +325,9 @@ Nesta tarefa, você criará um plug-in que solicita ao LLM que sugira um show co
 1. Adicione o seguinte prompt para invocar a nova função de plug-in:
 
     ```c#
+    // Invoke the concert suggester function with a prompt from the user
     chatHistory.AddUserMessage("Can you recommend a concert for me? I live in Washington");
-
-    reply = await chatCompletionService.GetChatMessageContentAsync(
-        chatHistory,
-        kernel: kernel,
-        executionSettings: openAIPromptExecutionSettings
-    );
-    Console.WriteLine(reply.ToString());
-    chatHistory.AddAssistantMessage(reply.ToString());
+    await GetAssistantReply();
     ```
 
 1. Insira `dotnet run` no terminal
@@ -397,8 +340,8 @@ Nesta tarefa, você criará um plug-in que solicita ao LLM que sugira um show co
     
     A resposta do LLM pode variar. Tente ajustar o prompt e o local para ver quais outros resultados você pode gerar.
 
-Agora seu agente pode executar ações diferentes automaticamente com base na entrada do usuário. Ótimo trabalho!
+Agora seu assistente pode executar ações diferentes automaticamente com base na entrada do usuário. Ótimo trabalho!
 
 ### Revisão
 
-Neste laboratório, você criou um agente de IA que pode gerenciar a biblioteca de músicas do usuário e oferecer recomendações personalizadas de músicas e shows. Você usou o SDK do Semantic Kernel para criar o agente de IA e conectá-lo ao serviço de modelo de linguagem grande (LLM). Você criou plug-ins personalizados para sua biblioteca de músicas e ativou a chamada automática de funções para fazer seu agente responder de forma dinâmica à entrada de usuário. Parabéns por ter concluído este laboratório!
+Neste laboratório, você criou um assistente de IA que pode gerenciar a biblioteca de músicas do usuário e oferecer recomendações personalizadas de músicas e shows. Você usou o SDK do Semantic Kernel para criar o assistente de IA e conectá-lo ao serviço de LLM (grande modelo de linguagem). Você criou plug-ins personalizados para sua biblioteca de músicas e ativou a chamada automática de funções para fazer o assistente responder de forma dinâmica à entrada de usuário. Parabéns por ter concluído este laboratório!
