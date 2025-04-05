@@ -189,7 +189,7 @@ Nesta tarefa, você criará um plug-in que permite adicionar músicas à lista d
 
 1. Navegue até o arquivo **Program.cs**.
 
-1. Adicione o seguinte código em **Importar plug-ins para o kernel**:
+1. Adicione o seguinte código no comentário **Import plugins to the kernel**:
 
     ```c#
     // Import plugins to the kernel
