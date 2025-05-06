@@ -1,35 +1,13 @@
-#README
+# Desenvolver soluções de IA generativa usando o OpenAI do Azure e o SDK do Kernel Semântico
 
-We've turned off the ability to report issues directly on this repo and do not monitor PRs.
+Os exercícios deste repositório foram elaborados para proporcionar uma experiência de aprendizado prática, na qual você explorará tarefas comuns que os desenvolvedores realizam ao criar soluções de IA generativa com o OpenAI do Azure e o Kernel Semântico.
 
-Provide feedback here: https://aka.ms/provide-feedback
+> **Observação**: para concluir os exercícios, você precisará de uma assinatura do Azure na qual tenha permissões e cotas suficientes para provisionar os recursos do Azure e os modelos de IA generativa necessários. Caso ainda não tenha uma conta do Azure, inscreva-se para obter uma [conta do Azure](https://azure.microsoft.com/free). Há uma opção de avaliação gratuita para novos usuários que inclui créditos para os primeiros 30 dias.
 
-Or, if you are a trainer with a microsoft.com email address, please create a ticket in AzDO.
+Visualize os exercícios no [site do GitHub Pages para este repositório](https://go.microsoft.com/fwlink/?linkid=2318531).
 
-# INF99X: exemplo de curso
+> **Observação**: embora você possa concluir esses exercícios sozinho, eles foram projetados para complementar os módulos do [Microsoft Learn](https://learn.microsoft.com/training/paths/develop-ai-agents-azure-open-ai-semantic-kernel-sdk/), nos quais você encontrará um aprofundamento em alguns dos conceitos subjacentes nos quais esses exercícios se baseiam.
 
-**Você é um MCT?** Dê uma olhada no nosso [Guia de usuário do GitHub para MCTs](https://microsoftlearning.github.io/MCT-User-Guide/)
+## Problemas de relatórios
 
-## O que estamos implementando?
-
-- Para dar suporte a esse curso, precisaremos fazer atualizações frequentes no conteúdo do curso para mantê-lo atualizado com os serviços da Microsoft utilizados no curso. Estamos publicando as instruções e os arquivos de laboratório no GitHub para permitir contribuições abertas entre os autores do curso e os MCTs (Microsoft Certified Trainer) para manter o conteúdo atualizado com as alterações de produtos.
-
-- Esperamos que isso traga um senso de colaboração para os laboratórios como nunca tivemos antes. Quando um serviço da Microsoft, como o Azure ou o Microsoft 365 for alterado e você o encontrar primeiro durante uma entrega ao vivo, vá em frente e faça um aprimoramento diretamente na fonte do laboratório. Ajude seus colegas MCTs.
-
-## Como devo usar este repositório?
-
-- Os materiais do instrutor são a fonte principal para ensinar o conteúdo do curso.
-
-- Esses arquivos no GitHub são projetados para serem usados nos laboratórios do curso, que usam o ambiente de laboratório hospedado.
-
-- Recomenda-se que, para cada entrega, os instrutores verifiquem o GitHub para ver se há alterações que possam ter sido feitas para oferecer suporte aos serviços em nuvem mais recentes da Microsoft e obter os arquivos mais recentes para suas entregas.
-
-## E as alterações no manual do aluno?
-
-- Vamos revisar o manual do estudante trimestralmente e o atualizar por meio dos canais normais de lançamento do MOC (Currículo Oficial da Microsoft) conforme necessário.
-
-## Como posso contribuir?
-
-- Qualquer MCT (Microsoft Certified Trainer) pode enviar uma solicitação de pull para o código ou conteúdo na reprodução do GitHub. A Microsoft e o autor do curso farão a triagem e incluirão alterações de conteúdo e código de laboratório, conforme necessário.
-
-- É possível enviar bugs, alterações, melhorias e ideias. Encontrou um novo recurso do Azure ou do Microsoft 365 antes de nós? Envie uma nova demonstração!
+Se você encontrar problemas nos exercícios, relate-os como **problemas** neste repositório.
