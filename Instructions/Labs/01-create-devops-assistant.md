@@ -1,11 +1,14 @@
 ---
 lab:
-  title: Criar um Assistente de DevOps com o SDK do Kernel Semântico
+  title: Criar um assistente de IA com o Kernel Semântico
+  description: Saiba como usar o Kernel Semântico para criar um assistente de IA generativa que pode executar tarefas de DevOps.
 ---
 
-# Criar um Assistente de DevOps com o SDK do Kernel Semântico
+# Criar um assistente de IA com o Kernel Semântico
 
-Neste laboratório, você criará o código para um assistente de IA que TODO. Você usará o SDK do Semantic Kernel para criar o assistente de IA e conectá-lo ao serviço de LLM (grande modelo de linguagem). O SDK do Semantic Kernel permite que você crie um aplicativo inteligente que possa interagir com o serviço LLM e fornecer recomendações personalizadas ao usuário.
+Neste laboratório, você desenvolverá o código de um assistente alimentado por IA projetado para automatizar as operações de desenvolvimento e ajudar a simplificar as tarefas. Você usará o SDK do Semantic Kernel para criar o assistente de IA e conectá-lo ao serviço de LLM (grande modelo de linguagem). O SDK do Kernel Semântico permite que você crie um aplicativo inteligente que possa interagir com o serviço LLM, responder a consultas de linguagem natural e fornecer insights personalizados ao usuário. Para este exercício, funções fictícias são fornecidas para representar tarefas típicas de DevOps. Vamos começar!
+
+Este exercício levará aproximadamente **30** minutos.
 
 ## Implantar um modelo de conclusão de chat
 
@@ -19,7 +22,7 @@ Neste laboratório, você criará o código para um assistente de IA que TODO. V
 
 1. Selecione **Criar Nova Implantação** e, em seguida, **A partir de modelos base**.
 
-1. Procure por **gpt-4o** na lista de modelos, selecione-o e confirme-o.
+1. Procure **gpt-4o** na lista de modelos, selecione-o e confirme-o.
 
 1. Insira um nome para sua implantação e deixe as opções padrão.
 
@@ -99,7 +102,7 @@ Neste laboratório, você criará o código para um assistente de IA que TODO. V
 
     O arquivo é aberto em um editor de código.
 
-1. Atualize os valores com a ID do modelo, o ponto de extremidade e a chave de API do Serviço OpenAI do Azure.
+1. Atualize os valores com a ID do modelo, o ponto de extremidade e a chave de API dos Serviços do OpenAI do Azure.
 
     **Python**
     ```python
@@ -232,7 +235,7 @@ Neste laboratório, você criará o código para um assistente de IA que TODO. V
 
 ## Execute o código do assistente de DevOps
 
-1. No painel de linha de comando do Cloud Shell, insira o seguinte comando para entrar no Azure.
+1. No painel de linha de comando do Cloud Shell, digite o seguinte comando para entrar no Azure.
 
     ```
     az login
@@ -240,7 +243,7 @@ Neste laboratório, você criará o código para um assistente de IA que TODO. V
 
     **<font color="red">Você deve entrar no Azure, mesmo que a sessão do Cloud Shell já esteja autenticada.</font>**
 
-    > **Observação**: na maioria dos cenários, apenas usar *az login* será suficiente. No entanto, se você tiver assinaturas em vários locatários, talvez seja necessário especificar o locatário usando o parâmetro *--tenant*. Para mais informações, consulte [Entrar no Azure interativamente usando a CLI do Azure](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively).
+    > **Observação**: na maioria dos cenários, apenas usar *az login* será suficiente. No entanto, se você tiver assinaturas em vários locatários, talvez seja necessário especificar o locatário usando o parâmetro *--tenant*. Consulte [Entrar no Azure interativamente usando a CLI do Azure](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively) para obter detalhes.
 
 1. Quando solicitado, siga as instruções para abrir a página de entrada em uma nova guia e insira o código de autenticação fornecido e suas credenciais do Azure. Em seguida, conclua o processo de entrada na linha de comando, selecionando a assinatura que contém o hub da Fábrica de IA do Azure, se solicitado.
 
@@ -323,7 +326,7 @@ Neste laboratório, você criará o código para um assistente de IA que TODO. V
     dotnet run
     ```
 
-1. Quando solicitado, insira o seguinte prompmt `Please deploy the stage environment`
+1. Quando solicitado, insira o seguinte prompt `Please deploy the stage environment`
 
 1. Você deverá ver uma resposta semelhante à seguinte saída:
 
@@ -432,7 +435,7 @@ Neste laboratório, você criará o código para um assistente de IA que TODO. V
     dotnet run
     ```
 
-1. Quando solicitado, insira o seguinte prompmt texto: `Please create a new branch`
+1. Quando solicitado, insira o seguinte texto: `Please create a new branch`
 
 1. Você deverá ver uma resposta semelhante à seguinte saída:
 
@@ -457,6 +460,7 @@ Neste laboratório, você criará o código para um assistente de IA que TODO. V
 
     **Python**
     ```python
+    # Create a function filter
     async def permission_filter(context: FunctionInvocationContext, next: Callable[[FunctionInvocationContext], Awaitable[None]]) -> None:
         await next(context)
         result = context.result
