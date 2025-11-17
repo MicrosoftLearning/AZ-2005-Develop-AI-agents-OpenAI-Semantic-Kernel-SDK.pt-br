@@ -1,3 +1,5 @@
+**⚠️ This GitHub repo will retire on 28th November 2025.** 
+
 # Desenvolver soluções de IA generativa usando o OpenAI do Azure e o SDK do Kernel Semântico
 
 Os exercícios deste repositório foram elaborados para proporcionar uma experiência de aprendizado prática, na qual você explorará tarefas comuns que os desenvolvedores realizam ao criar soluções de IA generativa com o OpenAI do Azure e o Kernel Semântico.
