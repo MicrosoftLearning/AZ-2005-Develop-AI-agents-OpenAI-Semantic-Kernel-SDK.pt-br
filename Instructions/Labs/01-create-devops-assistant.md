@@ -14,23 +14,29 @@ Este exercício levará aproximadamente **30** minutos.
 
 1. Navegue até [https://portal.azure.com](https://portal.azure.com).
 
-1. Crie um novo recurso do OpenAI do Azure usando as configurações padrão.
+1. Crie um novo recurso do **OpenAI do Azure** usando as configurações padrão.
 
 1. Após o recurso ser criado, escolha **Ir para o recurso**.
 
 1. Na página **Visão geral**, clique em **Ir para o Portal da Fábrica de IA do Azure**.
 
-1. Selecione **Criar Nova Implantação** e, em seguida, **A partir de modelos base**.
+    O portal da Fábrica de IA do Azure deve ser aberto em uma nova guia.
 
-1. Procure **gpt-4o** na lista de modelos, selecione-o e confirme-o.
+1. No painel de navegação esquerdo, selecione **Implantações**.
 
-1. Insira um nome para sua implantação e deixe as opções padrão.
+1. Selecione **Implantar modelo** e selecione **Implantar modelo base**.
 
-1. Quando a implantação for concluída, navegue de volta para o recurso OpenAI do Azure no portal do Azure.
+1. Pesquise pelo **gpt-4o** na lista de modelos, selecione-o e escolha **Confirmar**.
 
-1. Em **Gerenciamento de Recursos**, acesse **Chaves e Pontos de Extremidade**.
+    Uma caixa de diálogo deve aparecer para configurar a implantação no recurso de OpenAI do Azure.
 
-    Você usará os dados aqui na próxima tarefa para criar seu kernel. Lembre-se de manter suas chaves privadas e seguras!
+1. Examine as configurações e selecione **Implantar**.
+
+    Quando a implantação for concluída, a página de detalhes da implantação será exibida.
+
+1. Em **Ponto de extremidade**, observe o **URI de destino** e a **Chave**.
+
+    Você usará os valores aqui na próxima tarefa para criar seu kernel. Lembre-se de manter suas chaves privadas e seguras!
 
 ## Preparar a configuração de aplicativo
 
@@ -102,23 +108,25 @@ Este exercício levará aproximadamente **30** minutos.
 
     O arquivo é aberto em um editor de código.
 
-1. Atualize os valores com a ID do modelo, o ponto de extremidade e a chave de API dos Serviços do OpenAI do Azure.
+1. Atualize os valores da implantação do modelo de OpenAI do Azure:
 
     **Python**
     ```python
-    MODEL_DEPLOYMENT=""
-    BASE_URL=""
+    MODEL_ENDPOINT=""
     API_KEY="
+    MODEL_DEPLOYMENT_NAME=""
     ```
 
     **C#**
     ```json
     {
-        "modelName": "",
-        "endpoint": "",
-        "apiKey": ""
+        "openai_endpoint": "",
+        "api_key": "",
+        "model_deployment_name": "",
     }
     ```
+
+> **Observação**: se estiver usando C#, use a URL do ponto de extremidade do **OpenAI do Azure** na página **Início** do recurso para obter o valor `openai_endpoint`.
 
 1. Depois de atualizar os valores, use o comando **CTRL+S** para salvar suas alterações e, em seguida, use o comando **CTRL+Q** para fechar o editor de código, mantendo a linha de comando do Cloud Shell aberta.
 
@@ -143,9 +151,9 @@ Este exercício levará aproximadamente **30** minutos.
     # Create a kernel builder with Azure OpenAI chat completion
     kernel = Kernel()
     chat_completion = AzureChatCompletion(
-        deployment_name=deployment_name,
+        deployment_name=model_name,
         api_key=api_key,
-        base_url=base_url,
+        base_url=endpoint,
     )
     kernel.add_service(chat_completion)
     ```
@@ -153,11 +161,11 @@ Este exercício levará aproximadamente **30** minutos.
      ```c#
     // Create a kernel builder with Azure OpenAI chat completion
     var builder = Kernel.CreateBuilder();
-    builder.AddAzureOpenAIChatCompletion(modelId, endpoint, apiKey);
+    builder.AddAzureOpenAIChatCompletion(modelName, endpoint, apiKey);
     var kernel = builder.Build();
     ```
 
-1. Próximo à parte inferior do arquivo, localize o comentário **Create a kernel function to build the stage environment** e adicione o seguinte código para criar uma função de plug-in simulado que criará o ambiente de preparo:
+1. Na classe **DevopsPlugin** próxima à parte inferior do arquivo, localize o comentário **Criar uma função de kernel para criar o ambiente de preparo** e adicione o seguinte código para criar um plug-in fictício que criará o ambiente de preparo:
 
     **Python**
     ```python
@@ -179,7 +187,7 @@ Este exercício levará aproximadamente **30** minutos.
 
     O decorador `KernelFunction` declara a sua função nativa. Você usará um nome descritivo para a função para que a IA possa chamá-la corretamente. 
 
-1. Navegue até o comentário **Import plugins to the kernel** e adicione o seguinte código:
+1. No método **principal**, navegue até o comentário **Importar plug-ins para o kernel** e adicione o seguinte código para usar a classe de plug-in que você concluiu:
 
     **Python**
     ```python
@@ -192,7 +200,6 @@ Este exercício levará aproximadamente **30** minutos.
     // Import plugins to the kernel
     kernel.ImportPluginFromType<DevopsPlugin>();
     ```
-
 
 1. No comentário **Create prompt execution settings**, adicione o seguinte código para invocar automaticamente a função:
 
@@ -243,7 +250,7 @@ Este exercício levará aproximadamente **30** minutos.
 
     **<font color="red">Você deve entrar no Azure, mesmo que a sessão do Cloud Shell já esteja autenticada.</font>**
 
-    > **Observação**: na maioria dos cenários, apenas usar *az login* será suficiente. No entanto, se você tiver assinaturas em vários locatários, talvez seja necessário especificar o locatário usando o parâmetro *--tenant*. Consulte [Entrar no Azure interativamente usando a CLI do Azure](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively) para obter detalhes.
+    > **Observação**: na maioria dos cenários, apenas usar *az login* será suficiente. No entanto, se você tiver assinaturas em vários locatários, talvez seja necessário especificar o locatário usando o parâmetro *--tenant* . Consulte [Entrar no Azure interativamente usando a CLI do Azure](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively) para obter detalhes.
 
 1. Quando solicitado, siga as instruções para abrir a página de entrada em uma nova guia e insira o código de autenticação fornecido e suas credenciais do Azure. Em seguida, conclua o processo de entrada na linha de comando, selecionando a assinatura que contém o hub da Fábrica de IA do Azure, se solicitado.
 
@@ -260,7 +267,7 @@ Este exercício levará aproximadamente **30** minutos.
     dotnet run
     ```
 
-1. Quando solicitado, insira o seguinte prompmt `Please build the stage environment`
+1. Quando solicitado, insira o seguinte prompt `Please build the stage environment`
 
 1. Você deverá ver uma resposta semelhante à seguinte saída:
 
@@ -334,7 +341,9 @@ Este exercício levará aproximadamente **30** minutos.
     Assistant: The stage environment cannot be deployed because the earlier stage build failed due to unit test errors. Deploying a faulty build to stage may cause eventual issues and compromise the environment.
     ```
 
-    A resposta do LLM pode variar, mas ainda impede que você implante o site de preparo.
+    A resposta do LLM pode variar, mas ainda impede que você implante o site de preparo. 
+    
+1. Pressione <kbd>Enter</kbd> para encerrar o programa.
 
 ## Criar um prompt handlebars
 
@@ -454,6 +463,8 @@ Este exercício levará aproximadamente **30** minutos.
     Assistant: The new branch `feature-login` has been successfully created from `main`.
     ```
 
+1. Pressione <kbd>Enter</kbd> para encerrar o programa.
+
 ## Pedir o consentimento do usuário para ações
 
 1. Próximo à parte inferior do arquivo, localize o comentário **Create a function filter** e adicione o seguinte código:
@@ -506,9 +517,11 @@ Este exercício levará aproximadamente **30** minutos.
 
     Esse código usa o objeto `FunctionInvocationContext` para determinar qual plug-in e função foram invocados.
 
-1. Adicione a seguinte lógica para solicitar a permissão do usuário para reservar o voo:
+1. Adicione a seguinte lógica para solicitar a permissão do usuário para prosseguir com a operação:
 
-     **Python**
+    Mantenha o nível de recuo correto.
+
+    **Python**
     ```python
     # Request user approval
     print("System Message: The assistant requires approval to complete this operation. Do you approve (Y/N)")
@@ -573,6 +586,8 @@ Este exercício levará aproximadamente **30** minutos.
     User: N
     Assistant: I'm sorry, but I am unable to proceed with the deployment.
     ```
+
+1. Pressione <kbd>Enter</kbd> para encerrar o programa.
 
 ### Revisão
 
